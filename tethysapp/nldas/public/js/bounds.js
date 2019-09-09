@@ -1,0 +1,1 @@
+const bounds = {'APCP': '0,10'};

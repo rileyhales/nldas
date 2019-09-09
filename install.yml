@@ -1,0 +1,20 @@
+# This file may be committed to your app code.
+version: 3
+# This should match the app - package name in your setup.py
+name: nldas
+setup_path: setup.py
+
+conda:
+  channels:
+    - conda-forge
+  dependencies:
+    - netcdf4
+    - numpy
+    - pandas
+    - rasterstats
+    - rasterio
+    - requests
+    - pyshp
+    - json
+    - sphinx
+    - shpinx_rtd_theme
