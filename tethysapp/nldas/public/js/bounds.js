@@ -1,1 +1,1 @@
-const bounds = {'APCP': '0,10'};
+const bounds = {'APCP': '0,10', 'CAPE': '0,10', 'CONVfrac': '0,10', 'DLWRF': '0,10', 'DSWRF': '0,10', 'PEVAP': '0,10', 'PRES': '0,10', 'SPFH': '0,10', 'TMP': '0,10', 'UGRD': '0,10', 'VGRD': '0,10'};

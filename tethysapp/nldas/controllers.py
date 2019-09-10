@@ -2,7 +2,7 @@ from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 
 from .app import Nldas as App
-from .options import nldas_variables, wms_colors, geojson_colors, timeintervals, get_charttypes, worldregions
+from .options import nldas_variables, wms_colors, geojson_colors
 from .utilities import new_id
 
 
@@ -16,29 +16,6 @@ def home(request):
         multiple=False,
         original=True,
         options=nldas_variables(),
-    )
-    dates = SelectInput(
-        display_text='Time Interval',
-        name='dates',
-        multiple=False,
-        original=True,
-        options=timeintervals(),
-        initial='2010s'
-    )
-    charttype = SelectInput(
-        display_text='Choose a Plot Type',
-        name='charttype',
-        multiple=False,
-        original=True,
-        options=get_charttypes(),
-    )
-
-    regions = SelectInput(
-        display_text='Pick A World Region (ESRI Living Atlas)',
-        name='regions',
-        multiple=False,
-        original=True,
-        options=list(worldregions())
     )
 
     colorscheme = SelectInput(
@@ -107,9 +84,6 @@ def home(request):
     context = {
         # data options
         'variables': variables,
-        'dates': dates,
-        'charttype': charttype,
-        'regions': regions,
 
         # display options
         'colorscheme': colorscheme,

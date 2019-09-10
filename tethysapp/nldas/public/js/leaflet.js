@@ -39,15 +39,12 @@ function basemaps() {
 ////////////////////////////////////////////////////////////////////////  GLDAS LAYERS
 function newGLDAS() {
     let layer = $("#variables").val();
-    let wmsurl = threddsbase + $("#dates").val() + '.ncml';
     let cs_rng = bounds[layer];
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + ',' + String($("#cs_max").val())
     }
 
-    wmsurl = 'http://127.0.0.1:7000/thredds/wms/data/nldas/alltimes.ncml';
-
-    let wmsLayer = L.tileLayer.wms('http://127.0.0.1:7000/thredds/wms/data/nldas/alltimes.ncml', {
+    let wmsLayer = L.tileLayer.wms(threddsbase, {
         // version: '1.3.0',
         layers: layer,
         dimension: 'time',
@@ -111,14 +108,13 @@ function getGeoServerGJ(gsworksp, shpname, gsurl) {
 let legend = L.control({position: 'topright'});
 legend.onAdd = function () {
     let layer = $("#variables").val();
-    let wmsurl = threddsbase + $("#dates").val() + '.ncml';
     let cs_rng = bounds[layer];
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + ',' + String($("#cs_max").val())
     }
 
     let div = L.DomUtil.create('div', 'legend');
-    let url = wmsurl + "?REQUEST=GetLegendGraphic&LAYER=" + layer + "&PALETTE=" + $('#colorscheme').val() + "&COLORSCALERANGE=" + cs_rng;
+    let url = threddsbase + "?REQUEST=GetLegendGraphic&LAYER=" + layer + "&PALETTE=" + $('#colorscheme').val() + "&COLORSCALERANGE=" + cs_rng;
     div.innerHTML = '<img src="' + url + '" alt="legend" style="width:100%; float:right;">';
     return div
 };

@@ -4,7 +4,6 @@ Copyright: Riley Hales, RCH Engineering, 2019
 Description: Functions for generating timeseries and simple statistical
     charts for netCDF data for point, bounding box, or shapefile geometries
 """
-import calendar
 import datetime as dt
 import os
 import shutil
@@ -16,7 +15,6 @@ import rasterstats
 import shapefile
 import netCDF4
 import numpy
-import pandas as pd
 
 from .options import nldas_variables
 from .app import Nldas as App
@@ -50,18 +48,10 @@ def newchart(data):
     else:  # loc_type == 'VectorGeometry':
         values, meta['units'], meta['seriesmsg'] = vectorchart(data['variable'], data['vectordata'], path,
                                                                files, data['instance_id'])
-
-    if data['stats']:
-        return {
-            'meta': meta,
-            'timeseries': values,
-            'stats': makestatplots(values, data['time']),
-        }
-    else:
-        return {
-            'meta': meta,
-            'timeseries': values,
-        }
+    return {
+        'meta': meta,
+        'timeseries': values,
+    }
 
 
 def geojson_to_shape(vectordata, savepath):
@@ -130,7 +120,6 @@ def pointchart(var, coords, path, files):
         # get the time value for each file
         nc_obj = netCDF4.Dataset(os.path.join(path, nc), 'r')
         time = dt.datetime.strptime(nc, "NLDAS_FORA0125_H.A%Y%m%d.%H00.002.grb.SUB.nc4")
-        print(time)
         # slice the array at the area you want
         val = float(nc_obj[var][0, lat_indx, lon_indx].data)
         timeseries.append((time, val))
@@ -219,37 +208,3 @@ def vectorchart(var, vectordata, path, files, instance_id=None):
         nc_obj.close()
 
     return values, units, type_message
-
-
-def makestatplots(values, time):
-    df = pd.DataFrame(values, columns=['timestamp', 'values']).set_index('timestamp')
-    months = dict((n, m) for n, m in enumerate(calendar.month_name))
-    yearmulti = []
-    monthmulti = []
-    yearbox = []
-    monthbox = []
-
-    if time == 'alltimes':
-        ref_yr = 1948
-        numyears = int(dt.datetime.now().strftime("%Y")) - ref_yr + 1  # +1 because we want the first year also
-    else:
-        ref_yr = int(time.replace('s', ''))
-        numyears = 10
-    years = [str(i + ref_yr) for i in range(numyears)]
-
-    for i in range(1, 13):
-        tmp = df[df.index.month == i]['values']
-        ymin = min(tmp)
-        ymax = max(tmp)
-        mean = sum(tmp) / len(tmp)
-        monthbox.append((months[i], tmp.to_list()))
-        monthmulti.append((months[i], ymin, mean, ymax))
-    for year in years:
-        tmp = df[year]['values']
-        ymin = min(tmp)
-        ymax = max(tmp)
-        mean = sum(tmp) / len(tmp)
-        yearbox.append((year, tmp.to_list()))
-        yearmulti.append((year, ymin, mean, ymax))
-
-    return yearmulti, monthmulti, yearbox, monthbox

@@ -24,68 +24,6 @@ function plotlyTimeseries(data) {
     };
     Plotly.newPlot('chart', [values], layout);
 }
-
-function plotlyMultilineSeries(data) {
-    let index;
-    let x = [];
-    let max = [];
-    let mean = [];
-    let min = [];
-
-    if ($("#charttype").val().includes('year')) {
-        index = 0;
-    } else {
-        index = 1;
-    }
-
-    let layout = {
-        title: data['meta']['name'] + ' v Time ' + '(' + data['meta']['seriesmsg'] + ')',
-        xaxis: {title: 'Time'},
-        yaxis: {title: 'Units - ' + data['meta']['units']}
-    };
-
-    for (let i = 0; i < data['stats'][index].length; i++) {
-        x.push(data['stats'][index][i][0]);
-        min.push(data['stats'][index][i][1]);
-        mean.push(data['stats'][index][i][2]);
-        max.push(data['stats'][index][i][3]);
-    }
-
-    let values = [
-        {x: x, y: min, name: 'Minimum', mode: 'lines+markers', type: 'scatter'},
-        {x: x, y: mean, name: 'Average', mode: 'lines+markers', type: 'scatter'},
-        {x: x, y: max, name: 'Maximum', mode: 'lines+markers', type: 'scatter'},
-    ];
-    Plotly.newPlot('chart', values, layout);
-}
-
-function plotlyBoxplotSeries(data) {
-    let index;
-    let values = [];
-
-    if ($("#charttype").val().includes('year')) {
-        index = 2;
-    } else {
-        index = 3;
-    }
-
-    let layout = {
-        title: data['meta']['name'] + ' v Time ' + '(' + data['meta']['seriesmsg'] + ')',
-        xaxis: {title: 'Time'},
-        yaxis: {title: 'Units - ' + data['meta']['units']}
-    };
-
-    for (let i = 0; i < data['stats'][index].length; i++) {
-        values.push({
-            x: data['stats'][index][i][0],
-            y: data['stats'][index][i][1],
-            name: data['stats'][index][i][0],
-            type: 'box'
-        })
-    }
-    Plotly.newPlot('chart', values, layout);
-}
-
 function getDrawnChart(drawnItems) {
     // if there's nothing to get charts for then quit
     let geojson = drawnItems.toGeoJSON()['features'];
@@ -180,13 +118,7 @@ function makechart() {
     if (chartdata !== null) {
         let type = $("#charttype").val();
         $("#chart").html('');
-        if (type === 'timeseries') {
-            plotlyTimeseries(chartdata);
-        } else if (type === 'yearmulti' || type === 'monthmulti') {
-            plotlyMultilineSeries(chartdata);
-        } else if (type === 'yearbox' || type === 'monthbox') {
-            plotlyBoxplotSeries(chartdata);
-        }
+        plotlyTimeseries(chartdata);
     }
 }
 
@@ -218,7 +150,7 @@ function chartToCSV() {
     let link = document.createElement('a');
     link.setAttribute('href', encodeURI(csv));
     link.setAttribute('target', '_blank');
-    link.setAttribute('download', 'gldastimeseries.csv');
+    link.setAttribute('download', app + '_timeseries.csv');
     document.body.appendChild(link);
     link.click();
     $("#a").remove()
