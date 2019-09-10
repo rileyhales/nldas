@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'GLDAS Data Tool'
+project = 'NLDAS Data Tool'
 copyright = '2019, Riley Hales'
 author = 'Riley Hales'
 
 # The full version, including alpha/beta/rc tags
-release = '3.0'
+release = '1.0'
 
 master_doc = 'index'
 
