@@ -2,7 +2,7 @@ from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 
 from .app import Nldas as App
-from .options import nldas_variables, wms_colors, geojson_colors
+from .options import nldas_variables, wms_colors, geojson_colors, onion_creek_events
 from .utilities import new_id
 
 
@@ -16,6 +16,13 @@ def home(request):
         multiple=False,
         original=True,
         options=nldas_variables(),
+    )
+    events = SelectInput(
+        display_text='Pick an Event',
+        name='events',
+        multiple=False,
+        original=True,
+        options=onion_creek_events(),
     )
 
     colorscheme = SelectInput(
@@ -84,6 +91,7 @@ def home(request):
     context = {
         # data options
         'variables': variables,
+        'events': events,
 
         # display options
         'colorscheme': colorscheme,

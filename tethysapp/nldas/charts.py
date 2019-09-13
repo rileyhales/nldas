@@ -35,9 +35,9 @@ def newchart(data):
             break
 
     # list then filter the available netcdfs
-    path = os.path.join(App.get_custom_setting('thredds_path'), 'raw')
-    allfiles = os.listdir(path)
-    files = [i for i in allfiles if i.endswith('.nc4')]
+    path = os.path.join(App.get_custom_setting('thredds_path'), data['events'])
+    files = os.listdir(path)
+    files = [i for i in files if i.endswith('.nc4')]
     files.sort()
 
     # get the timeseries, units, and message based on location type

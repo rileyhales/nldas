@@ -50,7 +50,7 @@ function getDrawnChart(drawnItems) {
         let data = {
             coords: coords,
             variable: $("#variables").val(),
-            time: $("#dates").val(),
+            events: $("#events").val(),
             loc_type: geojson[0]['geometry']['type']
         };
 
@@ -85,7 +85,7 @@ function getShapeChart(selectedregion) {
     // setup a parameters json to generate the right timeseries
     let data = {
         variable: $("#variables").val(),
-        time: $("#dates").val(),
+        events: $("#events").val(),
         loc_type: 'VectorGeometry'
     };
 

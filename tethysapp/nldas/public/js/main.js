@@ -35,14 +35,13 @@ mapObj.on(L.Draw.Event.CREATED, function (event) {
 
 mapObj.on("mousemove", function (event) {$("#mouse-position").html('Lat: ' + event.latlng.lat.toFixed(5) + ', Lon: ' + event.latlng.lng.toFixed(5));});
 
-let layerGLDAS = newGLDAS();            // adds the wms raster layer
-// let layerRegion = regionsESRI();        // adds the world region boundaries from esri living atlas
-// let controlsObj = makeControls();       // the layer toggle controls top-right corner
+let layerNLDAS = newNLDAS();            // adds the wms raster layer
+let controlsObj = makeControls();       // the layer toggle controls top-right corner
 legend.addTo(mapObj);                   // add the legend graphic to the map
 latlon.addTo(mapObj);                   // add the box showing lat and lon to the map
 ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 function update() {
-    layerGLDAS = newGLDAS();
+    layerNLDAS = newNLDAS();
     controlsObj = makeControls();
     legend.addTo(mapObj);
 }
@@ -79,7 +78,7 @@ $("#chartCSV").click(function () {chartToCSV()});
 
 // data controls
 $("#variables").change(function () {clearMap();update();getDrawnChart(drawnItems);});
-$("#dates").change(function () {clearMap();update();getDrawnChart(drawnItems);});
+$("#events").change(function () {clearMap();update();getDrawnChart(drawnItems);});
 $('#charttype').change(function () {makechart()});
 $("#regions").change(function () {changeregions('region')});
 $("#countriesGO").click(function () {changeregions('country')});
@@ -90,7 +89,7 @@ $("#cs_min").change(function () {if ($("#use_csrange").is(":checked")) {clearMap
 $("#cs_max").change(function () {if ($("#use_csrange").is(":checked")) {clearMap();update()}});
 $("#use_csrange").change(function () {clearMap();update()});
 $('#colorscheme').change(function () {clearMap();update();});
-$("#opacity").change(function () {layerGLDAS.setOpacity($(this).val())});
+$("#opacity").change(function () {layerNLDAS.setOpacity($(this).val())});
 $('#gjClr').change(function () {styleGeoJSON()});
 $("#gjOp").change(function () {styleGeoJSON()});
 $("#gjWt").change(function () {styleGeoJSON()});

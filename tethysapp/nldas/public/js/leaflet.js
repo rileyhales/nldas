@@ -37,14 +37,14 @@ function basemaps() {
 }
 
 ////////////////////////////////////////////////////////////////////////  GLDAS LAYERS
-function newGLDAS() {
+function newNLDAS() {
     let layer = $("#variables").val();
     let cs_rng = bounds[layer];
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + ',' + String($("#cs_max").val())
     }
 
-    let wmsLayer = L.tileLayer.wms(threddsbase, {
+    let wmsLayer = L.tileLayer.wms(threddsbase + $("#events").val() + '.ncml', {
         // version: '1.3.0',
         layers: layer,
         dimension: 'time',
@@ -114,7 +114,7 @@ legend.onAdd = function () {
     }
 
     let div = L.DomUtil.create('div', 'legend');
-    let url = threddsbase + "?REQUEST=GetLegendGraphic&LAYER=" + layer + "&PALETTE=" + $('#colorscheme').val() + "&COLORSCALERANGE=" + cs_rng;
+    let url = threddsbase + $("#events").val() + '.ncml' + "?REQUEST=GetLegendGraphic&LAYER=" + layer + "&PALETTE=" + $('#colorscheme').val() + "&COLORSCALERANGE=" + cs_rng;
     div.innerHTML = '<img src="' + url + '" alt="legend" style="width:100%; float:right;">';
     return div
 };
@@ -130,18 +130,16 @@ latlon.onAdd = function () {
 // the layers box on the top right of the map
 function makeControls() {
     return L.control.layers(basemapObj, {
-        'Earth Observation': layerGLDAS,
+        'Earth Observation': layerNLDAS,
         'Drawing': drawnItems,
         'Uploaded Shapefile': usershape,
-        'Region Boundaries': layerRegion,
     }).addTo(mapObj);
 }
 
 // you need to remove layers when you make changes so duplicates dont persist and accumulate
 function clearMap() {
-    controlsObj.removeLayer(layerGLDAS);
-    mapObj.removeLayer(layerGLDAS);
+    controlsObj.removeLayer(layerNLDAS);
+    mapObj.removeLayer(layerNLDAS);
     controlsObj.removeLayer(usershape);
-    controlsObj.removeLayer(layerRegion);
     mapObj.removeControl(controlsObj);
 }
