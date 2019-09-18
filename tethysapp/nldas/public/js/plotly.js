@@ -127,26 +127,7 @@ function chartToCSV() {
         alert('There is no data in the chart. Please plot some data first.');
         return
     }
-    let data = [];
-    let charttype = $("#charttype").val();
-    if (charttype === 'timeseries') {
-        data = chartdata['timeseries']
-    } else {
-        let tmp;
-        if (charttype === 'yearmulti') {
-            tmp = chartdata['stats'][0];
-        } else if (charttype === 'monthmulti') {
-            tmp = chartdata['stats'][1];
-        } else if (charttype === 'yearbox') {
-            tmp = chartdata['stats'][2];
-        } else if (charttype === 'monthbox') {
-            tmp = chartdata['stats'][3];
-        }
-        for (let i = 0; i < tmp.length; i++) {
-            data.push(tmp[i]);
-        }
-    }
-    let csv = "data:text/csv;charset=utf-8," + data.map(e => e.join(",")).join("\n");
+    let csv = "data:text/csv;charset=utf-8," + chartdata['timeseries'].map(e => e.join(",")).join("\n");
     let link = document.createElement('a');
     link.setAttribute('href', encodeURI(csv));
     link.setAttribute('target', '_blank');
