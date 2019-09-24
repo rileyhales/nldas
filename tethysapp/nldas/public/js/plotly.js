@@ -116,7 +116,6 @@ function getShapeChart(selectedregion) {
 
 function makechart() {
     if (chartdata !== null) {
-        let type = $("#charttype").val();
         $("#chart").html('');
         plotlyTimeseries(chartdata);
     }
